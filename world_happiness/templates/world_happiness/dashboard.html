@@ -1,0 +1,42 @@
+{% extends 'world_happiness/base.html' %}
+
+{% block container %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div>
+        <h2 style="text-align: center;">Edades de Usuarios</h2>
+        <div style="width:50%;display:block;margin:auto;"><canvas id="miGrafico"></canvas></div>
+        
+        {{ nombres|json_script:"nombres_data" }}
+        {{ edades|json_script:"edades_data" }}
+        <script>
+            const ctx = document.getElementById("miGrafico").getContext("2d");
+            const nombres_data = document.getElementById('nombres_data').textContent;
+            const edades_data = document.getElementById('edades_data').textContent;
+
+            const nombres = JSON.parse(nombres_data);
+            const edades = JSON.parse(edades_data);
+            const config1 = {
+                type:'bar',
+                data:{
+                    labels:nombres,
+                    datasets:[{
+                        label:'Edades',
+                        data:edades,
+                        backgroundColor: 'rgba(64,162,235,0.7)',
+                        borderColor: 'rgba(52,162,235,1)',
+                        borderWidth: 2
+                    }]
+                },
+                options:{
+                    responsive:true,
+                    plugins:{
+                        legend:{
+                            display:true
+                        }
+                    }
+                },
+            }
+            const trace1 = new Chart(ctx, config1);
+        </script>
+    </div>
+{% endblock %}
